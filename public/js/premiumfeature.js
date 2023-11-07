@@ -121,6 +121,7 @@ document.getElementById("buypremium").onclick = async function (e) {
     return JSON.parse(jsonPayload);
   }
   function showexpensereport(obj){
+   
     const token = localStorage.getItem("token");
     const decodeToken = parseJwt(token);
     
@@ -183,7 +184,7 @@ function showleaderscreen(obj) {
  
   document.getElementById("reporthide").onclick= async function(event){
     event.preventDefault()
-    console.log("showor not")
+    
   document.getElementById("reportshown").style.display="none"
   document.getElementById("expensetracker").style.display="block"
   }

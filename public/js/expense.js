@@ -65,15 +65,15 @@ window.addEventListener("DOMContentLoaded", async function () {
 
 document.getElementById("noiteminpage").value=noitem
   const decodeToken = parseJwt(token);
-  console.log(decodeToken);
+ 
   const ispremiumuser = decodeToken.ispremiumuser;
  const email= document.getElementById("useremail").innerHTML=decodeToken.email;
-  console.log(email)
+ 
   document.getElementById("username").innerHTML=decodeToken.name;
   if (ispremiumuser) {
     document.getElementById("leaderboard1").style.display = "block";
    document.getElementById("leadershow").className="list-group-item active"
-    console.log(ispremiumuser);
+    
     showpremiumusermessage();
     premium()
   }else{
@@ -102,7 +102,7 @@ async function refresh(){
         month.month==((ele.date).split(" "))[1]
        
       )
-      console.log(((ele.date).split(" "))[1])
+      
       const existingitem=monthwise[existingindex]
       if(existingitem){
        const update={
@@ -114,13 +114,14 @@ async function refresh(){
 monthwise.push({month:((ele.date).split(" "))[1],price:Number(ele.sellingprice)})
       }
     })
+    
     for(var i=0;i<monthwise.length;i++){
       showmonthlyreport(monthwise[i])
       
     }
     const data2=get.data;
     data2.sort((a,b)=>b.id-a.id)
-    
+  
     for (var i = 0; i < data2.length; i++) {
      
       showexpensereport(data2[i])
@@ -136,7 +137,7 @@ monthwise.push({month:((ele.date).split(" "))[1],price:Number(ele.sellingprice)}
 
 }
 async function refresh1(){
-  console.log("generate")
+ 
   document.getElementById("userscreen").innerHTML=""
   const token = localStorage.getItem("token");
   
@@ -144,10 +145,10 @@ async function refresh1(){
 
   try{
     const get = await axios.get(`expense/pagewise/alladd-expense?page=${currentPage}&noitem=${noitem}` ,{ headers: { Authorization: token } });
-    console.log(get.data)
+   
      updatePageNumber(get.data);
      const data3=get.data.expenses;
-    //  data3.sort((a,b)=>b.id-a.id)
+    
       index=get.data.index
      for (var i = 0; i < data3.length; i++) {
       showuseronscreen(data3[i]);
@@ -236,10 +237,10 @@ function showuseronscreen(obj) {
   
 }
 async function showtotalprice(obj){
-  console.log(obj.price)
+
   const totalpriceelement=document.getElementById("total")
-  console.log(totalpriceelement)
-  const price = parseInt(obj.price);
+ 
+  const price = parseInt(obj.sellingprice);
     totalpriceelement.textContent = parseInt(totalpriceelement.textContent) +price;
 }
 
