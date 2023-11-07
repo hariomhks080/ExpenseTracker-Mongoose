@@ -8,7 +8,7 @@ const signup = require('./model/signup')
 const order=require("./model/orders")
 const Forgotpasswords = require('./model/forgetpassword');
 const download=require("./model/download")
-
+const PORT = process.env.PORT;
 
 
 const signuproutes=require("./routes/signup")
@@ -46,10 +46,14 @@ signup.hasMany(Forgotpasswords);
 Forgotpasswords.belongsTo(signup,{constraints:true,onDelete:'CASCADE'});
 signup.hasMany(download)
 download.belongsTo(signup,{constraints:true,onDelete:'CASCADE'});
-sequelize.sync().then(result => {
-
-    app.listen(process.env.PORT);
-
-}).catch(err => {
-    console.log(err)
-})
+async function initiate(){
+    try {
+        await sequelize.sync();
+        app.listen(PORT,()=>{
+            console.log(`Server is running at ${PORT}`);
+        });       
+    } catch (error) {
+        console.log(error);
+    }
+}
+initiate();
