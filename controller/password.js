@@ -13,7 +13,7 @@ exports.getformforgetpassword=(req,res)=>{
     res.sendFile(path.join(rootdir, "views", "forgetpassword.html"));
 }
 exports.forgetpassword=async (req,res)=>{
-   // console.log(req.body)
+    console.log(req.body)
     try {
         const { email } = req.body;
         const user = await User.findOne({
@@ -33,7 +33,7 @@ exports.forgetpassword=async (req,res)=>{
                 }
             ]
             const resetresponse = await user.createForgotpassword({});
-           
+           console.log("123",resetresponse)
             const { id } = resetresponse;
             const mailresponse = await tranEmailApi.sendTransacEmail({
                 sender,

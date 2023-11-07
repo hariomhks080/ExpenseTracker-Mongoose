@@ -34,12 +34,12 @@ async function a(event) {
     
     console.log(token);
     const post = await axios.post(
-      "http://localhost:3000/expense/add-expense",
+      `expense/add-expense`,
       obj,
       { headers: { Authorization: token } }
     );
     console.log(post);
-    // window.location.href="http://localhost:3000/demopage"
+    // window.location.href="demopage"
 refresh()
 refresh1()
 
@@ -93,7 +93,7 @@ async function refresh(){
  
   const token = localStorage.getItem("token");
   try {
-    const get = await axios.get("http://localhost:3000/expense/report/add-expense" ,{ headers: { Authorization: token } });
+    const get = await axios.get(`expense/report/add-expense`,{ headers: { Authorization: token } });
    
     const data=get.data;
     let monthwise=[]
@@ -116,7 +116,7 @@ monthwise.push({month:((ele.date).split(" "))[1],price:Number(ele.sellingprice)}
     })
     for(var i=0;i<monthwise.length;i++){
       showmonthlyreport(monthwise[i])
-      showtotalprice(monthwise[i])
+      
     }
     const data2=get.data;
     data2.sort((a,b)=>b.id-a.id)
@@ -124,7 +124,7 @@ monthwise.push({month:((ele.date).split(" "))[1],price:Number(ele.sellingprice)}
     for (var i = 0; i < data2.length; i++) {
      
       showexpensereport(data2[i])
-      
+      showtotalprice(data2[i])
 
     }
   
@@ -143,7 +143,7 @@ async function refresh1(){
   
 
   try{
-    const get = await axios.get(`http://localhost:3000/expense/pagewise/alladd-expense?page=${currentPage}&noitem=${noitem}` ,{ headers: { Authorization: token } });
+    const get = await axios.get(`expense/pagewise/alladd-expense?page=${currentPage}&noitem=${noitem}` ,{ headers: { Authorization: token } });
     console.log(get.data)
      updatePageNumber(get.data);
      const data3=get.data.expenses;
@@ -221,7 +221,7 @@ function showuseronscreen(obj) {
     try {
       
       await axios.delete(
-        `http://localhost:3000/deleteuser/${obj.id}`,
+        `deleteuser/${obj.id}`,
         {
           headers: { Authorization: token },
           data: { previousprice: obj.sellingprice },

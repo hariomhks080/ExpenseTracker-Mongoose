@@ -8,7 +8,7 @@ async function forget(event){
     try{
         const token = localStorage.getItem("token");
         const post = await axios.post(
-            "http://localhost:3000/forget/password",
+            `forget/password`,
             obj,
             { headers: { Authorization: token } }
           );

@@ -14,7 +14,7 @@ async function resetpassword(event){
        resetid:lastPart
     }
     try{
-        const response =  await axios.post("http://localhost:3000/password/reset",obj);
+        const response =  await axios.post(`password/reset`,obj);
        
         alert(response.data.message)
     }catch(err){

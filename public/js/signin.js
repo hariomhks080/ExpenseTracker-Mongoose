@@ -6,7 +6,7 @@ async function emailmatching(event) {
   const value = document.getElementById("exampleInputEmail1").value;
 
   try {
-    const get = await axios.get("http://localhost:3000/signup/add-user");
+    const get = await axios.get(`signup/add-user`);
     for (var i = 0; i < get.data.length; i++) {
       checkvalidemail(get.data[i], value);
     }
@@ -37,7 +37,7 @@ async function signin(event) {
   };
 
   try {
-    const post = await axios.post("http://localhost:3000/signin/add-user", obj);
+    const post = await axios.post(`signin/add-user`, obj);
     console.log(post.data);
    alert(post.data.message)
     window.location.href="/expense"

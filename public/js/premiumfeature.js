@@ -3,7 +3,7 @@ document.getElementById("buypremium").onclick = async function (e) {
     const token = localStorage.getItem("token");
 
     const response = await axios.get(
-      "http://localhost:3000/purchase/premiummembership",
+      `purchase/premiummembership`,
       { headers: { Authorization: token } }
     );
 
@@ -13,7 +13,7 @@ document.getElementById("buypremium").onclick = async function (e) {
       handler: async function (response) {
         console.log("6", new Date().toJSON());
         const res = await axios.post(
-          "http://localhost:3000/purchase/updatetransactionstatus",
+          `purchase/updatetransactionstatus`,
           {
             order_id: options.order_id,
             payment_id: response.razorpay_payment_id,
@@ -39,7 +39,7 @@ document.getElementById("buypremium").onclick = async function (e) {
       const payment_id = res.error.metadata.payment_id;
       await axios
         .post(
-          "http://localhost:3000/purchase/failedtransactionstatus",
+          `purchase/failedtransactionstatus`,
           {
             order_id,
             payment_id,
@@ -90,7 +90,7 @@ document.getElementById("buypremium").onclick = async function (e) {
     
     try {
       const get = await axios.get(
-        "http://localhost:3000/expense/alladd-expense",
+        `expense/alladd-expense`,
         { headers: { Authorization: token } }
       );
       
@@ -197,7 +197,7 @@ function showleaderscreen(obj) {
     document.getElementById("statusshown").innerHTML="File downloading...."
     document.getElementById("statusshown").style.backgroundColor="green"
 
-    await axios.get("http://localhost:3000/premium/download", { headers: {"Authorization" : token} })
+    await axios.get(`premium/download`, { headers: {"Authorization" : token} })
     .then((response) => {
 
             //the bcakend is essentially sending a download link
@@ -229,7 +229,7 @@ function showleaderscreen(obj) {
   async function premium() {
     try {
         const token = localStorage.getItem("token");
-        const downloadhistory = await axios.get('premium/downloadhistory', { headers: {"Authorization" : token} });
+        const downloadhistory = await axios.get(`premium/downloadhistory`, { headers: {"Authorization" : token} });
         
         showDownloadhistory(downloadhistory.data);
     } catch (error) {

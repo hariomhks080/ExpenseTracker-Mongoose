@@ -56,7 +56,7 @@ exports.postsignin=async (req,res,next)=>{
 //   }catch(err){
 // res.status(500).json(err)
 //   }
-
+console.log(req.body)
    try{
     const password=req.body.password
     const email=req.body.email;

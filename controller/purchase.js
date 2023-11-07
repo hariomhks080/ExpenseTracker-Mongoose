@@ -3,7 +3,7 @@ const Order = require("../model/orders");
 const jwt=require("jsonwebtoken")
 const sequelize = require("../util/database");
 function generateacesstoken(id,name,ispremiumuser,email){
-    return jwt.sign({userId:id,name:name,ispremiumuser,email},"secretkey",{expiresIn:'1h'})
+    return jwt.sign({userId:id,name:name,ispremiumuser,email},process.env.SECRET_KEY,{expiresIn:'1h'})
   }
 exports.purchasemembership = async (req, res) => {
   console.log("dummy")
