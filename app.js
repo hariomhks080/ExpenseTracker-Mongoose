@@ -48,7 +48,7 @@ signup.hasMany(download)
 download.belongsTo(signup,{constraints:true,onDelete:'CASCADE'});
 sequelize.sync().then(result => {
 
-    app.listen(3000);
+    app.listen(process.env.PORT);
 
 }).catch(err => {
     console.log(err)
