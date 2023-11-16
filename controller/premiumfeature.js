@@ -45,7 +45,7 @@ const S3services=require("../services/S3services")
           attributes: ['id', 'name', 'totalExpenses'],
           order: [['totalExpenses', 'DESC']],
           limit:15,
-          order:[["totalExpenses","DESC"]]
+          //order:[["totalExpenses","DESC"]]
         })
     //   const userAggregatedExpenses= await Expense.findAll({ 
     //     attributes:["userId",[sequelize.fn("sum",sequelize.col("sellingprice")),"total_cost"]],

@@ -12,7 +12,8 @@ async function forget(event){
             obj,
             { headers: { Authorization: token } }
           );
-          console.log(post)
+          alert("Forget Password Link Send To Email Sucessfully")
+          window.location.href="/"
     }catch(err){
         console.log(err)
     }

@@ -38,6 +38,9 @@ async function a(event) {
       obj,
       { headers: { Authorization: token } }
     );
+    if(edit!=""){
+      document.getElementById("edititem").innerHTML="Add Item"
+    }
     console.log(post);
     // window.location.href="demopage"
 refresh()
@@ -54,10 +57,10 @@ if(ispremiumuser){
   } catch (err) {
     console.log(err);
   }
-  // event.target.username.value = "";
-  // event.target.product.value = "";
-  // event.target.edit.value = "";
-  // event.target.previousprice.value = "";
+  event.target.username.value = "";
+  event.target.product.value = "";
+  event.target.edit.value = "";
+  event.target.previousprice.value = "";
 }
 
 window.addEventListener("DOMContentLoaded", async function () {
@@ -284,6 +287,12 @@ document.getElementById("nextPage").onclick=async (event)=>{
     refresh1();
  }
 
+}
+function logout(){
+  
+  localStorage.removeItem("token")
+  localStorage.removeItem("rzp_device_id")
+  localStorage.removeItem("rzp_checkout_anon_id")
 }
 
 

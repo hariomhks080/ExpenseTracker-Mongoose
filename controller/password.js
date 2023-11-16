@@ -24,7 +24,7 @@ exports.forgetpassword=async (req,res)=>{
       
         if (user) {
             const sender = {
-                email:process.env.EMAIL_ID,
+                email:process.env.EMAIL_ID ,
                 name:process.env.NAME_ID
             }
             const receivers = [
