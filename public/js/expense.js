@@ -38,10 +38,11 @@ async function a(event) {
       obj,
       { headers: { Authorization: token } }
     );
+    console.log(post);
     if(edit!=""){
       document.getElementById("edititem").innerHTML="Add Item"
     }
-    console.log(post);
+   
     // window.location.href="demopage"
 refresh()
 refresh1()
@@ -214,7 +215,7 @@ function showuseronscreen(obj) {
   document.getElementById("usernametag").value = obj.sellingprice;
     document.getElementById("producttag").value = obj.productname;
     document.getElementById("origin").value = obj.items;
-    document.getElementById("edit").value = obj.id;
+    document.getElementById("edit").value = obj._id;
     document.getElementById("previousprice").value = obj.sellingprice;
     document.getElementById("edititem").innerHTML="Edit Item"
   };
@@ -225,7 +226,7 @@ function showuseronscreen(obj) {
     try {
       
       await axios.delete(
-        `deleteuser/${obj.id}`,
+        `deleteuser/${obj._id}`,
         {
           headers: { Authorization: token },
           data: { previousprice: obj.sellingprice },

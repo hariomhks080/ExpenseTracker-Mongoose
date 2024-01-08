@@ -1,13 +1,10 @@
-const path=require("path")
-const express=require("express");
-const cors = require('cors');
 require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
 
-const Expense = require('./model/expense');
-const signup = require('./model/signup')
-const order=require("./model/orders")
-const Forgotpasswords = require('./model/forgetpassword');
-const download=require("./model/download")
+const mongoose = require('mongoose');
+const uri = "mongodb+srv://hariomhks088:987654321@cluster0.6sujnmk.mongodb.net/mongoose?retryWrites=true&w=majority";
+
 const PORT = process.env.PORT;
 
 
@@ -22,7 +19,7 @@ const app=express();
 app.use(cors());
 
 const bodyParser=require("body-parser")
-const sequelize = require('./util/database');
+
 
 
 
@@ -38,17 +35,10 @@ app.use(purchaseroutes)
 app.use(passwordroutes)
 
 
-signup.hasMany(Expense);
-Expense.belongsTo(signup,{constraints:true, onDelete:'CASCADE'}); 
-signup.hasMany(order);
-order.belongsTo(signup,{constraints:true, onDelete:'CASCADE'})
-signup.hasMany(Forgotpasswords);
-Forgotpasswords.belongsTo(signup,{constraints:true,onDelete:'CASCADE'});
-signup.hasMany(download)
-download.belongsTo(signup,{constraints:true,onDelete:'CASCADE'});
+
 async function initiate(){
     try {
-        await sequelize.sync();
+        await mongoose.connect(uri)
         app.listen(PORT,()=>{
             console.log(`Server is running at ${PORT}`);
         });       

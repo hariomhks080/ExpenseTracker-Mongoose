@@ -7,9 +7,9 @@ exports.authorization = async(req,res,next)=>{
         const token = req.header("Authorization");
         //console.log(token)
         const user = jwt.verify(token,process.env.SECRET_KEY);
-       // console.log(user)
+     
       // console.log("userid----",user.userId)
-       User.findByPk(user.userId).then(user=>{
+       User.findById(user.userId).then(user=>{
         req.user=user
         //console.log(user)
         next()

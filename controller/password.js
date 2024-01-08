@@ -1,26 +1,25 @@
-const path = require("path");
-const rootdir = require("../util/path");
+
 const User = require("../model/signup");
-const ForgotPassword=require("../model/forgetpassword")
+
 const bcrypt=require("bcrypt")
-const Expense = require("../model/expense");
-const sequelize = require("../util/database");
+const { ObjectId } = require('mongodb');
+
+
 const Sib = require('sib-api-v3-sdk');
 const client = Sib.ApiClient.instance;
 client.authentications['api-key'].apiKey = process.env.API_KEY;
 const tranEmailApi = new Sib.TransactionalEmailsApi();
 exports.getformforgetpassword=(req,res)=>{
-    res.sendFile(path.join(rootdir, "views", "forgetpassword.html"));
+    res.sendFile("forgetpassword.html",{root:"views"} );
 }
 exports.forgetpassword=async (req,res)=>{
-    console.log(req.body)
+   
     try {
         const { email } = req.body;
         const user = await User.findOne({
-            where: {
-                email: email
-            }
-        });
+           email:email,
+        }).select("email forgotPassword");
+       
       
         if (user) {
             const sender = {
@@ -32,10 +31,16 @@ exports.forgetpassword=async (req,res)=>{
                     email: email
                 }
             ]
-            const resetresponse = await user.createForgotpassword({});
-           console.log("123",resetresponse)
-            const { id } = resetresponse;
-            const mailresponse = await tranEmailApi.sendTransacEmail({
+           user.forgotPassword.push({
+                isActive: true,
+                createdAt: new Date()
+            });
+           
+          
+            const{forgotPassword} =  await user.save();
+            const id = forgotPassword[forgotPassword.length-1]._id.toString();
+            
+            await tranEmailApi.sendTransacEmail({
                 sender,
                 to: receivers,
                 subject: "Reset Your password",
@@ -69,11 +74,22 @@ exports.forgetpassword=async (req,res)=>{
 exports.getresetform=async (req,res)=>{
     try {
         let id = req.params.id;
-        const passwordreset = await ForgotPassword.findByPk(id);
-        if (passwordreset.isactive) {
-            passwordreset.isactive = false;
-            await passwordreset.save();
-            res.status(200).sendFile(path.join(rootdir, "views", "resetpassword.html"));
+       
+        const user = await User.findOne({
+            "forgotPassword": {
+              $elemMatch: {
+                "_id": new ObjectId(id)
+              }
+            }
+          });
+          const forgotPassword= user.forgotPassword;
+         
+          const existing= forgotPassword.find(item => item._id==id);
+          console.log("ex",existing)
+        if (existing.isActive) {
+            existing.isActive = false;
+            await user.save();
+            res.status(200).sendFile( "resetpassword.html",{root:"views"});
         } else {
            throw new Error(err)
         }
@@ -83,28 +99,31 @@ exports.getresetform=async (req,res)=>{
     }
 }
 exports.resetpassword=async (req,res)=>{
-   
+   console.log("123");
     try {
         const { resetid, newpassword } = req.body;
-        const passwordreset = await ForgotPassword.findByPk(resetid);
+        const passwordreset = await User.findOne({
+            "forgotPassword": {
+              $elemMatch: {
+                "_id": new ObjectId(resetid)
+              }
+            }
+          });
+          const forgotPassword= passwordreset.forgotPassword;
+         
+          const existing= forgotPassword.find(item => item._id==resetid);
         const currentTime = new Date();
         console.log(currentTime)
-        const createdAtTime = new Date(passwordreset.createdAt);
+        const createdAtTime = new Date(existing.createdAt);
         console.log(createdAtTime)
         const timeDifference = currentTime - createdAtTime;
         console.log(timeDifference)
         const timeLimit =  60 * 1000; 
-        console.log(timeLimit)
+        console.log("154",timeLimit)
         if(timeDifference <= timeLimit){
             const hashedPassword = await bcrypt.hash(newpassword, 10);
-            await User.update(
-                {
-                    password: hashedPassword
-                },
-                {
-                    where: { id: passwordreset.userId }
-                }
-            );
+            passwordreset.password = hashedPassword;
+             await passwordreset.save();
             res.status(200).json({ message: "Password reset successful." });
         }else{
           
