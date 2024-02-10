@@ -3,9 +3,9 @@ const express = require('express');
 const cors = require('cors');
 
 const mongoose = require('mongoose');
-const uri = process.env.url;
+const uri = "mongodb+srv://hariomhks088:987654321@cluster0.exgkj.mongodb.net/";
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
 
 const signuproutes=require("./routes/signup")
