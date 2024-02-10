@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 
 const mongoose = require('mongoose');
-const uri = "mongodb+srv://hariomhks088:987654321@cluster0.6sujnmk.mongodb.net/mongoose?retryWrites=true&w=majority";
+const uri = process.env.url;
 
 const PORT = process.env.PORT;
 
